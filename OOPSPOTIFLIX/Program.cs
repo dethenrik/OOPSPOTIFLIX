@@ -1,0 +1,2 @@
+﻿using OOPSPOTIFLIX;
+new Gui();
