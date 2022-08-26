@@ -9,7 +9,7 @@ namespace OOPSPOTIFLIX
     internal class Data
     {
         public List<Movie> movieList { get; set; }
-        //public List<Series> seriesList;
+        public List<Series> seriesList { get; set; }
         //public List<Music> musicList;
     }
 }
