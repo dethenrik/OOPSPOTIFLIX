@@ -10,6 +10,9 @@ namespace OOPSPOTIFLIX
     {
         public List<Movie> movieList { get; set; }
         public List<Series> seriesList { get; set; }
-        //public List<Music> musicList;
+        public List<Music> songList;
+        public List<Music> albumList;
+        public List<Episode> EpisodeList;
+
     }
 }

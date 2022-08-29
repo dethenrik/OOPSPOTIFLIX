@@ -46,14 +46,7 @@ namespace OOPSPOTIFLIX
                 case ConsoleKey.D3:
 
                     break;
-                case ConsoleKey.NumPad4:
-                case ConsoleKey.D4:
-                    SaveData();
-                    break;
-                case ConsoleKey.NumPad5:
-                case ConsoleKey.D5:
-                    LoadData();
-                    break;
+
             }
         }
 
@@ -70,18 +63,53 @@ namespace OOPSPOTIFLIX
             File.WriteAllText(path + "/movielist.json", json);
         }
 
-
-
-
-
-
         private void LoadData()
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string json = File.ReadAllText(path + "/movielist.json");
             data = System.Text.Json.JsonSerializer.Deserialize<Data>(json);
         }
+        private void SaveDataSeries()
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string json = System.Text.Json.JsonSerializer.Serialize(data);
+            File.WriteAllText(path + "/Serieslist.json", json);
+        }
 
+        private void LoadDataSeries()
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string json = File.ReadAllText(path + "/Serieslist.json");
+            data = System.Text.Json.JsonSerializer.Deserialize<Data>(json);
+        }
+
+        private void SaveDataAlbum()
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string json = System.Text.Json.JsonSerializer.Serialize(data);
+            File.WriteAllText(path + "/Albumlist.json", json);
+        }
+
+        private void LoadDataAlbum()
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string json = File.ReadAllText(path + "/Albumlist.json");
+            data = System.Text.Json.JsonSerializer.Deserialize<Data>(json);
+        }
+
+        private void SaveDataSong()
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string json = System.Text.Json.JsonSerializer.Serialize(data);
+            File.WriteAllText(path + "/Songlist.json", json);
+        }
+
+        private void LoadDataSong()
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string json = File.ReadAllText(path + "/Songlist.json");
+            data = System.Text.Json.JsonSerializer.Deserialize<Data>(json);
+        }
 
 
 
@@ -91,7 +119,7 @@ namespace OOPSPOTIFLIX
         private void MovieMenu()
         {
             Console.Clear();
-            Console.WriteLine("\nMOVIE MENU\n1: list of Movies \n2: search for Movies \n3: Add Movie ");
+            Console.WriteLine("\nMOVIE MENU\n1: list of Movies \n2: search for Movies \n3: Add Movie \n4: Save movie list \n5: Load movies list ");
 
             switch (Console.ReadKey(true).Key)
             {
@@ -106,6 +134,14 @@ namespace OOPSPOTIFLIX
                 case ConsoleKey.NumPad3:
                 case ConsoleKey.D3:
                     AddMovie();
+                    break;
+                case ConsoleKey.NumPad4:
+                case ConsoleKey.D4:
+                    SaveData();
+                    break;
+                case ConsoleKey.NumPad5:
+                case ConsoleKey.D5:
+                    LoadData();
                     break;
 
             }
@@ -187,7 +223,7 @@ namespace OOPSPOTIFLIX
         private void SeriesMenu()
         {
             Console.Clear();
-            Console.WriteLine("\nMOVIE MENU\n1: list of series \n2: search for series \n3: Add series ");
+            Console.WriteLine("\nMOVIE MENU\n1: list of series \n2: search for series \n3: Add series \n 4: Save Series \n5: Load Series ");
 
             switch (Console.ReadKey(true).Key)
             {
@@ -203,6 +239,14 @@ namespace OOPSPOTIFLIX
                 case ConsoleKey.D3:
                     AddSeries();
                     break;
+                case ConsoleKey.NumPad4:
+                case ConsoleKey.D4:
+                    SaveDataSeries();
+                    break;
+                case ConsoleKey.NumPad5:
+                case ConsoleKey.D5:
+                    LoadDataSeries();
+                    break;
 
             }
         }
@@ -217,6 +261,7 @@ namespace OOPSPOTIFLIX
 
             series.Title = GetString("Title: ");
             series.Genre = GetString("Genre: ");
+            series.Length = GetLength();
             series.ReleaseDate = GetReleaseDate();
             series.WWW = GetString("WWW: ");
 
@@ -242,21 +287,20 @@ namespace OOPSPOTIFLIX
         {
             Episode episode = new Episode();
 
-
-
             episode.Title = GetString("Title: ");
             episode.Season = Getint("Genre: ");
+            episode.Length = GetLength();
             episode.ReleaseDate = GetReleaseDate();
             episode.EpisodeNum = Getint("WWW: ");
 
 
-            ShowSeries(series);
+            ShowEpisode(episode);
             Console.WriteLine("Confirm adding to list (Y/N)");
             switch (Console.ReadKey(true).Key)
             {
 
                 case ConsoleKey.Y:
-                    data.seriesList.Add(series);
+                    data.seriesList.Add(s);
                     break;
 
                 case ConsoleKey.N:
@@ -287,6 +331,24 @@ namespace OOPSPOTIFLIX
         }
 
 
+        private void SearchEpisode()
+        {
+            Console.WriteLine("search: ");
+            string search2 = Console.ReadLine();
+            foreach (Episode episode in data.EpisodeList)
+            {
+                if (episode.Title != null && search2 != null)
+                {
+                    if (episode.Title.Contains(search2) || episode.Genre.Contains(search2))
+                    {
+                        Console.Clear();
+                        ShowEpisode(episode);
+                    }
+
+                }
+            }
+        }
+
 
 
         private void ShowSeries(Series s)
@@ -301,6 +363,18 @@ namespace OOPSPOTIFLIX
             }
         }
 
+        private void ShowEpisode(Episode e)
+        {
+            Console.WriteLine($"{e.Title} {e.Length} {e.Genre} {e.ReleaseDate} {e.WWW}");
+        }
+        private void ShowEpisodeList()
+        {
+            foreach (Episode e in data.EpisodeList)
+            {
+                ShowEpisode(e);
+            }
+        }
+
 
 
 
@@ -312,61 +386,190 @@ namespace OOPSPOTIFLIX
 
 
 
+        private void MusicMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("\nMUSIC MENU\n1: list of Albums \n2: List of songs \n3: Search for album \n4: Search for song \n5: Add album \n6: Add song \n7: Save album list\n8: Load album list\n9: Save Song list \n0: Load Song list");
+
+            switch (Console.ReadKey(true).Key)
+            {
+                case ConsoleKey.NumPad1:
+                case ConsoleKey.D1:
+                    ShowAlbumList();
+                    break;
+                case ConsoleKey.NumPad2:
+                case ConsoleKey.D2:
+                    ShowSongList();
+                    break;
+                case ConsoleKey.NumPad3:
+                case ConsoleKey.D3:
+                    SearchAlbum();
+                    break;
+                case ConsoleKey.NumPad4:
+                case ConsoleKey.D4:
+                    SearchSong();
+                    break;
+                case ConsoleKey.NumPad5:
+                case ConsoleKey.D5:
+                    AddAlbum();
+                    break;
+                case ConsoleKey.NumPad6:
+                case ConsoleKey.D6:
+                    AddSong();
+                    break;
+                case ConsoleKey.NumPad7:
+                case ConsoleKey.D7:
+                    SaveDataAlbum();
+                    break;
+                case ConsoleKey.NumPad8:
+                case ConsoleKey.D8:
+                    LoadDataAlbum();
+                    break;
+                case ConsoleKey.NumPad9:
+                case ConsoleKey.D9:
+                    SaveDataSong();
+                    break;
+                case ConsoleKey.NumPad0:
+                case ConsoleKey.D0:
+                    LoadDataSong();
+                    break;
+            }
+        }
+
+
+
+        private void AddAlbum()
+        {
+            Music music = new Music();
+
+            music.Title = GetString("Title: ");
+            music.Genre = GetString("Genre: ");
+            music.ReleaseDate = GetReleaseDate();
+            music.Artist = GetString("Kunstner: ");
+
+            ShowAlbum(music);
+            Console.WriteLine("Confirm adding to list (Y/N)");
+            switch (Console.ReadKey(true).Key)
+            {
+
+                case ConsoleKey.Y:
+                    data.albumList.Add(music);
+                    break;
+
+                case ConsoleKey.N:
+                    break;
+            }
+        }
+
+        private void AddSong()
+        {
+            Music music = new Music();
+
+
+            music.Title = GetString("Title: ");
+            music.Genre = GetString("Genre: ");
+            music.ReleaseDate = GetReleaseDate();
+            music.Artist = GetString("Kunstner: ");
+
+
+            ShowSong(music);
+            Console.WriteLine("Confirm adding to list (Y/N)");
+            switch (Console.ReadKey(true).Key)
+            {
+
+                case ConsoleKey.Y:
+                    data.songList.Add(music);
+                    break;
+
+                case ConsoleKey.N:
+                    break;
+
+            }
+        }
+
+        //-------------------SEARCH ALBUM---------------\\
+
+        private void SearchAlbum()
+        {
+            Console.WriteLine("search album: ");
+            string search2 = Console.ReadLine();
+            foreach (Music music in data.albumList)
+            {
+                if (music.Title != null && search2 != null)
+                {
+                    if (music.Title.Contains(search2) || music.Genre.Contains(search2))
+                    {
+                        Console.Clear();
+                        ShowAlbum(music);
+                    }
+
+                }
+            }
+        }
+        //-------------------SEARCH ALBUM---------------\\
 
 
 
 
+        //-------------------------SEARCH SONGS----------------------\\
+        private void SearchSong()
+        {
+            Console.WriteLine("search song: ");
+            string search2 = Console.ReadLine();
+            foreach (Music music in data.songList)
+            {
+                if (music.Title != null && search2 != null)
+                {
+                    if (music.Title.Contains(search2) || music.Genre.Contains(search2))
+                    {
+                        Console.Clear();
+                        ShowSong(music);
+                    }
+
+                }
+            }
+        }
+        //-------------------------SEARCH SONGS----------------------\\
+
+
+
+        //-------------------SHOW ALBUMS---------------\\
+        private void ShowAlbum(Music M)
+        {
+            Console.WriteLine($"{M.Title} {M.Length} {M.Genre} {M.ReleaseDate} {M.Artist}");
+        }
+        private void ShowAlbumList()
+        {
+            foreach (Music n in data.albumList)
+            {
+                ShowAlbum(n);
+
+                Console.WriteLine("Do you wish to search for a song "); 
+            }
+        }
+        //-------------------SHOW ALBUMS---------------\\
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        //-------------------- SHOW SONGS-------------\\
+        private void ShowSong(Music M)
+        {
+            Console.WriteLine($"{M.Title} {M.Length} {M.Genre} {M.ReleaseDate} {M.Artist}");
+        }
+        private void ShowSongList()
+        {
+            foreach (Music n in data.songList)
+            {
+                ShowSong(n);
+            }
+        }
+        //-------------------- SHOW SONGS-------------\\
 
 
 
 
         //-----------------------------------//
-
-
-
-
         private DateTime GetLength()
         {
             DateTime to;
@@ -377,8 +580,6 @@ namespace OOPSPOTIFLIX
             } while (!DateTime.TryParse(Console.ReadLine(), out to));
             return to;
         }
-
-
 
 
         private DateTime GetReleaseDate()
