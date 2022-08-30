@@ -44,7 +44,7 @@ namespace OOPSPOTIFLIX
                     break;
                 case ConsoleKey.NumPad3:
                 case ConsoleKey.D3:
-
+                    MovieMenu();
                     break;
 
             }
@@ -85,9 +85,10 @@ namespace OOPSPOTIFLIX
 
         private void SaveDataAlbum()
         {
+            ListName listName = new ListName();
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string json = System.Text.Json.JsonSerializer.Serialize(data);
-            File.WriteAllText(path + "/Albumlist.json", json);
+            File.WriteAllText(path + listName, json);
         }
 
         private void LoadDataAlbum()
@@ -143,7 +144,6 @@ namespace OOPSPOTIFLIX
                 case ConsoleKey.D5:
                     LoadData();
                     break;
-
             }
         }
 
@@ -181,18 +181,14 @@ namespace OOPSPOTIFLIX
 
         private void SearchMovie()
         {
-            Console.WriteLine("search: ");
-            string search = Console.ReadLine();
+            Console.Write("Search: ");
+            string? search = Console.ReadLine().ToLower();
             foreach (Movie movie in data.movieList)
             {
-                if (movie.Title != null && search != null)
+                if (search != null)
                 {
-                    if (movie.Title.Contains(search) || movie.Genre.Contains(search))
-                    {
-                        Console.Clear();
+                    if (movie.Title.ToLower().Contains(search) || movie.Genre.ToLower().Contains(search))
                         ShowMovie(movie);
-                    }
-
                 }
             }
         }
@@ -288,10 +284,10 @@ namespace OOPSPOTIFLIX
             Episode episode = new Episode();
 
             episode.Title = GetString("Title: ");
-            episode.Season = Getint("Genre: ");
+            episode.Season = GetInt("Genre: ");
             episode.Length = GetLength();
             episode.ReleaseDate = GetReleaseDate();
-            episode.EpisodeNum = Getint("WWW: ");
+            episode.EpisodeNum = GetInt("WWW: ");
 
 
             ShowEpisode(episode);
@@ -300,7 +296,7 @@ namespace OOPSPOTIFLIX
             {
 
                 case ConsoleKey.Y:
-                    data.seriesList.Add(s);
+                    data.EpisodeList.Add(episode);
                     break;
 
                 case ConsoleKey.N:
@@ -314,18 +310,14 @@ namespace OOPSPOTIFLIX
 
         private void SearchSeries()
         {
-            Console.WriteLine("search: ");
-            string search2 = Console.ReadLine();
+            Console.Write("Search: ");
+            string? search = Console.ReadLine().ToLower();
             foreach (Series series in data.seriesList)
             {
-                if (series.Title != null && search2 != null)
+                if (search != null)
                 {
-                    if (series.Title.Contains(search2) || series.Genre.Contains(search2))
-                    {
-                        Console.Clear();
+                    if (series.Title.ToLower().Contains(search) || series.Genre.ToLower().Contains(search))
                         ShowSeries(series);
-                    }
-
                 }
             }
         }
@@ -333,18 +325,14 @@ namespace OOPSPOTIFLIX
 
         private void SearchEpisode()
         {
-            Console.WriteLine("search: ");
-            string search2 = Console.ReadLine();
+            Console.Write("Search: ");
+            string? search = Console.ReadLine().ToLower();
             foreach (Episode episode in data.EpisodeList)
             {
-                if (episode.Title != null && search2 != null)
+                if (search != null)
                 {
-                    if (episode.Title.Contains(search2) || episode.Genre.Contains(search2))
-                    {
-                        Console.Clear();
+                    if (episode.Title.ToLower().Contains(search) || episode.Genre.ToLower().Contains(search))
                         ShowEpisode(episode);
-                    }
-
                 }
             }
         }
@@ -454,6 +442,10 @@ namespace OOPSPOTIFLIX
 
                 case ConsoleKey.Y:
                     data.albumList.Add(music);
+                    if (true)
+                    {
+                        ListName listname = new ListName();
+                    }
                     break;
 
                 case ConsoleKey.N:
@@ -476,33 +468,26 @@ namespace OOPSPOTIFLIX
             Console.WriteLine("Confirm adding to list (Y/N)");
             switch (Console.ReadKey(true).Key)
             {
-
                 case ConsoleKey.Y:
                     data.songList.Add(music);
                     break;
 
                 case ConsoleKey.N:
                     break;
-
             }
         }
 
         //-------------------SEARCH ALBUM---------------\\
-
         private void SearchAlbum()
         {
-            Console.WriteLine("search album: ");
-            string search2 = Console.ReadLine();
-            foreach (Music music in data.albumList)
+            Console.Write("Search: ");
+            string? search = Console.ReadLine().ToLower();
+            foreach (Music album in data.albumList)
             {
-                if (music.Title != null && search2 != null)
+                if (search != null)
                 {
-                    if (music.Title.Contains(search2) || music.Genre.Contains(search2))
-                    {
-                        Console.Clear();
-                        ShowAlbum(music);
-                    }
-
+                    if (album.Title.ToLower().Contains(search) || album.Genre.ToLower().Contains(search))
+                        ShowAlbum(album);
                 }
             }
         }
@@ -514,18 +499,14 @@ namespace OOPSPOTIFLIX
         //-------------------------SEARCH SONGS----------------------\\
         private void SearchSong()
         {
-            Console.WriteLine("search song: ");
-            string search2 = Console.ReadLine();
-            foreach (Music music in data.songList)
+            Console.Write("Search: ");
+            string? search = Console.ReadLine().ToLower();
+            foreach (Music song in data.songList)
             {
-                if (music.Title != null && search2 != null)
+                if (search != null)
                 {
-                    if (music.Title.Contains(search2) || music.Genre.Contains(search2))
-                    {
-                        Console.Clear();
-                        ShowSong(music);
-                    }
-
+                    if (song.Title.ToLower().Contains(search) || song.Genre.ToLower().Contains(search))
+                        ShowSong(song);
                 }
             }
         }
@@ -607,17 +588,15 @@ namespace OOPSPOTIFLIX
             return input;
         }
 
-        private string Getint(int type)
+        private int GetInt(string request)
         {
-            string input;
+            int i;
             do
             {
-                Console.Clear();
-                Console.WriteLine(type);
-                input = Console.ReadLine();
+                Console.Write(request);
             }
-            while (input == null && input != "");
-            return input;
+            while (!int.TryParse(Console.ReadLine(), out i));
+            return i;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace OOPSPOTIFLIX
 {
     internal class Series : SharedContent
     {
-        public string WWW { get; set; }
+        
         public List<Episode> Episodes { get; set; }
     }
 
