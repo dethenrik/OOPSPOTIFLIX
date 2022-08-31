@@ -30,7 +30,7 @@ namespace OOPSPOTIFLIX
 
         private void Menu()
         {
-            Console.WriteLine("\nMOVIE MENU\n1: Movies \n2: Series \n3: Music \n4: Save list \n5: Load list");
+            Console.WriteLine("\nMENU\n1: Movies \n2: Series \n3: Music \n4: Save list \n5: Load list");
 
             switch (Console.ReadKey(true).Key)
             {
@@ -219,7 +219,7 @@ namespace OOPSPOTIFLIX
         private void SeriesMenu()
         {
             Console.Clear();
-            Console.WriteLine("\nMOVIE MENU\n1: list of series \n2: search for series \n3: Add series \n 4: Save Series \n5: Load Series ");
+            Console.WriteLine("\nSERIES MENU\n1: list of series \n2: search for series \n3: Add series \n 4: Save Series \n5: Load Series ");
 
             switch (Console.ReadKey(true).Key)
             {
