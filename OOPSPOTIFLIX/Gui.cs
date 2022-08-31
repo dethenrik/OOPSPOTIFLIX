@@ -82,7 +82,8 @@ namespace OOPSPOTIFLIX
             string json = File.ReadAllText(path + "/Serieslist.json");
             data = System.Text.Json.JsonSerializer.Deserialize<Data>(json);
         }
-
+        // man skal kunne oprette en liste som er kaldt det du vil kalde dit album via consol app, derefter skal man kunne oprette en sang som man kan gemme på en given liste ved at skrive et tal op til 50, du skal derfter.
+        // så hvis jeg vil tilføje en sang skal jeg ha muligheden for at vælge fra en liste med op til 50 album og hvis jeg vil tilføje en nirvana sang til deres album på nr.23 på listen skal jeg skrive 23 for at den tilføjer sangen til listen.
         private void SaveDataAlbum()
         {
             ListName listName = new ListName();

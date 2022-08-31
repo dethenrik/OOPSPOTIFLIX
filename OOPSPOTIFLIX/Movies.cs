@@ -14,12 +14,12 @@
     }
     internal class ListName
     {
-        public string GetListName()
+        private string GetListName()
         {
             string listName = Console.ReadLine();
             return listName;
         }
-            public List<string> listName { get; set; }
+            public List<string> listName { get { GetListName }; set; }
             
         }
     }
